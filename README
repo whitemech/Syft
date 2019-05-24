@@ -14,7 +14,8 @@ Compilation Instructions for Syft using CMake
        sudo apt-get install automake
     b. Needing to reconfigure, do this before configuring:
        autoreconf -i
-    c. If you are using a version of aclocal other than 1.14, modify the version in configure accordingly.
+    c. Using a version of aclocal other than 1.14:
+       modify the version 1.14 in configure accordingly.
 
 ==== Install FLEX, BISON ====
 
