@@ -14,6 +14,7 @@ Compilation Instructions for Syft using CMake
        sudo apt-get install automake
     b. Needing to reconfigure, do this before configuring:
        autoreconf -i
+    c. If you are using a version of aclocal other than 1.14, modify the version in configure accordingly.
 
 ==== Install FLEX, BISON ====
 
@@ -24,6 +25,10 @@ Compilation Instructions for Syft using CMake
 
 0.4 You probably want MONA if you are using Syft:
     sudo apt-get install mona
+
+==== Install BOOST ====
+    sudo apt-get install libboost-dev
+    
 
 ==== Install Syft ====
 
