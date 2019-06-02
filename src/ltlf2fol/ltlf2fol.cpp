@@ -227,7 +227,8 @@ string trans_fol(ltl_formula* root, int t, int& c){
 }
 
 string up(string a){
-  return boost::to_upper_copy<std::string>(a);
+    return a + "";
+  //return boost::to_upper_copy<std::string>(a);
 }
 
 
