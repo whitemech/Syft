@@ -95,17 +95,15 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
     while(true){
         BDD I = mgr->bddOne();
         int index;
-        // input should be provided by environment
         for(int i = 0; i < bdd->input.size(); i++){
-            // map to bdd var index
             index = bdd->input[i];
             I *= bdd->bddvars[index];
         }
-        //
+
         BDD tmp = W[cur] + univsyn_sys(I);
         W.push_back(tmp);
         cur++;
-
+        cout << "Iteration " << cur << endl;
         BDD O = mgr->bddOne();
         for(int i = 0; i < bdd->output.size(); i++){
             index = bdd->output[i];
@@ -139,6 +137,7 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
     return false;
 }
 
+// W is T, Wprime is W
 bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
     BDD transducer;
     while(true){
@@ -152,6 +151,7 @@ bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
         BDD tmp = W[cur] + existsyn_env(O, transducer);
         W.push_back(tmp);
         cur++;
+        cout << "Iteration " << cur << endl;
         if(fixpoint())
             break;
 
@@ -222,19 +222,18 @@ int* syn::state2bit(int n){
     return s;
 }
 
-// needs to satisfy all possible values of input variables
+
 BDD syn::univsyn_sys(BDD univ){
 
     BDD tmp = Wprime[cur];
     int offset = bdd->nbits + bdd->nvars;
-    // previous/next image
     tmp = prime(tmp);
     for(int i = 0; i < bdd->nbits; i++){
         tmp = tmp.Compose(bdd->res[i], offset+i);
     }
 
     tmp *= !Wprime[cur];
-    // abstract all input variables
+
     BDD eliminput = tmp.UnivAbstract(univ);
     return eliminput;
 
@@ -268,7 +267,6 @@ BDD syn::prime(BDD orign){
     int offset = bdd->nbits + bdd->nvars;
     BDD tmp = orign;
     for(int i = 0; i < bdd->nbits; i++){
-        // Compose(F, v, G) : F(v, x) -> F(G(x), x), means substitute v = G(x)
         tmp = tmp.Compose(bdd->bddvars[i+offset], i);
     }
     return tmp;
