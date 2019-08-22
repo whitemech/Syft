@@ -92,6 +92,8 @@ void syn::printBDDSat(BDD b){
 }
 
 bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
+    clock_t c_start = clock();
+    //auto t_start = chrono::high_resolution_clock::now();
     while(true){
         BDD I = mgr->bddOne();
         int index;
@@ -103,7 +105,6 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
         BDD tmp = W[cur] + univsyn_sys(I);
         W.push_back(tmp);
         cur++;
-        cout << "Iteration " << cur << endl;
         BDD O = mgr->bddOne();
         for(int i = 0; i < bdd->output.size(); i++){
             index = bdd->output[i];
@@ -111,9 +112,14 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
         }
 
 	    Wprime.push_back(existsyn_sys(O));
+        cout << "Iteration " << cur << " Node size: " << Wprime[cur].nodeCount()<< endl;
         if(fixpoint())
             break;
     }
+    clock_t c_end = clock();
+    //auto t_end = chrono::high_resolution_clock::now();
+    std::cout << "Total CPU time used in synthesis: "
+              << 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC << " ms\n";
     if(Wprime[cur-1].Eval(bdd->initbv).IsOne()){
         BDD O = mgr->bddOne();
         for(int i = 0; i < bdd->output.size(); i++){
@@ -139,6 +145,8 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
 
 // W is T, Wprime is W
 bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
+    clock_t c_start = clock();
+    //auto t_start = chrono::high_resolution_clock::now();
     BDD transducer;
     while(true){
         int index;
@@ -151,7 +159,7 @@ bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
         BDD tmp = W[cur] + existsyn_env(O, transducer);
         W.push_back(tmp);
         cur++;
-        cout << "Iteration " << cur << endl;
+        cout << "Iteration " << cur << " Node size: " << Wprime[cur - 1].nodeCount()<< endl;
         if(fixpoint())
             break;
 
@@ -163,10 +171,18 @@ bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
 
         Wprime.push_back(univsyn_env(I));
         if((Wprime[cur].Eval(bdd->initbv)).IsOne()){
+                clock_t c_end = clock();
+                //auto t_end = chrono::high_resolution_clock::now();
+            std::cout << "Total CPU time used in synthesis: "
+              << 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC << " ms\n";
             return true;
         }
 
     }
+    clock_t c_end = clock();
+    //auto t_end = chrono::high_resolution_clock::now();
+    std::cout << "Total CPU time used in synthesis: "
+              << 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC << " ms\n";
     if((Wprime[cur-1].Eval(bdd->initbv)).IsOne()){
       // TODO: use ifstrategysynthesis
         BDD O = mgr->bddOne();
@@ -181,9 +197,16 @@ bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
         //naive synthesis
         //transducer.SolveEqn(O, S2O, outindex(), bdd->output.size());
         //strategy(S2O);
-
+    clock_t c_end = clock();
+    //auto t_end = chrono::high_resolution_clock::now();
+    std::cout << "Total CPU time used in synthesis: "
+              << 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC << " ms\n";
         return true;
     }
+    
+    //          << "Total wall clock time passed in synthesis: "
+    //          << std::chrono::duration<double, std::milli>(t_end-t_start).count()
+    //          << " ms\n";
     return false;
 
 }
@@ -230,6 +253,7 @@ BDD syn::univsyn_sys(BDD univ){
     tmp = prime(tmp);
     for(int i = 0; i < bdd->nbits; i++){
         tmp = tmp.Compose(bdd->res[i], offset+i);
+        cout << "Node size after compose " << i << " variable: " << tmp.nodeCount()<< endl;
     }
 
     tmp *= !Wprime[cur];
@@ -247,6 +271,7 @@ BDD syn::existsyn_env(BDD exist, BDD& transducer){
     tmp = prime(tmp);
     for(int i = 0; i < bdd->nbits; i++){
         tmp = tmp.Compose(bdd->res[i], offset+i);
+        cout << "Node size after compose " << i << " variable: " << tmp.nodeCount()<< endl;
     }
     transducer = tmp;
     tmp *= !Wprime[cur];
