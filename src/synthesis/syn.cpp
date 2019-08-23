@@ -11,6 +11,9 @@ syn::syn(Cudd* m, string filename, string partfile)
     initializer();
 
     //bdd->bdd2dot();
+    for(int i = 0; i < bdd->nbits; i++){
+        cout << "Node size B_{" << i<< "} for " << i << " variable: " << bdd->res[i].nodeCount()<< endl;
+    }
 
 }
 
