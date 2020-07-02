@@ -37,13 +37,13 @@ typedef void* yyscan_t;
 	ltl_formula *formula;
 }
 
-%left TOKEN_EQUIV
 %right TOKEN_IMPLIES
+%right TOKEN_EQUIV
 %left TOKEN_OR
 %left TOKEN_AND
-%left TOKEN_RELEASE
-%left TOKEN_UNTIL
-%left TOKEN_WEAK_UNTIL
+%right TOKEN_RELEASE
+%right TOKEN_UNTIL
+%right TOKEN_WEAK_UNTIL
 %right TOKEN_FUTURE
 %right TOKEN_GLOBALLY
 %right TOKEN_NEXT
