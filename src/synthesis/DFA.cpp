@@ -62,11 +62,11 @@ namespace Syft {
     set<string> input_set;
     set<string> output_set;
     for (int i = 1; i < inputs.size(); i++) {
-      string c = boost::algorithm::to_upper_copy(inputs[i]);
+      string c = inputs[i];
       input_set.insert(c);
     }
     for (int i = 1; i < outputs.size(); i++) {
-      string c = boost::algorithm::to_upper_copy(outputs[i]);
+      string c = outputs[i];
       output_set.insert(c);
     }
 
