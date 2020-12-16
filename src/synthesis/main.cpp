@@ -40,7 +40,7 @@ int main(int argc, char ** argv){
               << "DFA constructed by MONA wall clock time passed: "
               << std::chrono::duration<double, std::milli>(t_mona_dfa_end-t_start).count()
               << " ms\n";
-    syn test(mgr, autfile, partfile);
+    Syft::syn test(mgr, autfile, partfile);
     clock_t c_dfa_end = clock();
     auto t_dfa_end = chrono::high_resolution_clock::now();
     std::cout << "Symbolic DFA construction CPU time used: "
