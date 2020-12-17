@@ -22,14 +22,14 @@ int main(int argc, char ** argv){
     string partfile;
     string autfile;
     string starting_player;
-    if(argc != 4){
-        cout<<"Usage: ./Syft LTLFfile Partfile Starting_player(0: system, 1: environment)"<<endl;
+    if(argc != 2 and argc != 4){
+        cout<<"Usage: ./Syft LTLFfile [Partfile Starting_player(0: system, 1: environment)]"<<endl;
         return 0;
     }
     else{
         filename = argv[1];
-        partfile = argv[2];
-        starting_player = argv[3];
+        partfile = argc > 2? argv[2] : "";
+        starting_player = argc > 2? argv[3]: "";
     }
     Cudd* mgr = new Cudd();
     clock_t c_mona_dfa_end = clock();
@@ -40,6 +40,10 @@ int main(int argc, char ** argv){
               << "DFA constructed by MONA wall clock time passed: "
               << std::chrono::duration<double, std::milli>(t_mona_dfa_end-t_start).count()
               << " ms\n";
+
+    if (argc < 3){
+      return 0;
+    }
     Syft::syn test(mgr, autfile, partfile);
     clock_t c_dfa_end = clock();
     auto t_dfa_end = chrono::high_resolution_clock::now();
