@@ -14,8 +14,9 @@ namespace Syft {
   class DFA {
   private:
     bool to_upper = true;
+    bool remove_first_state = true;
   public:
-    DFA(Cudd *m, bool to_upper = true);
+    DFA(Cudd *m, bool to_upper = true, bool remove_first_state = true);
 
     virtual ~DFA();
 

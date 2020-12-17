@@ -31,10 +31,9 @@ int main(int argc, char ** argv){
         partfile = argc > 2? argv[2] : "";
         starting_player = argc > 2? argv[3]: "";
     }
-    Cudd* mgr = new Cudd();
+    autfile = get_DFAfile(filename);
     clock_t c_mona_dfa_end = clock();
     auto t_mona_dfa_end = chrono::high_resolution_clock::now();
-    autfile = get_DFAfile(filename);
     std::cout << "DFA constructed by MONA CPU time used: "
               << 1000.0 * (c_mona_dfa_end-c_start) / CLOCKS_PER_SEC << " ms\n"
               << "DFA constructed by MONA wall clock time passed: "
@@ -42,8 +41,14 @@ int main(int argc, char ** argv){
               << " ms\n";
 
     if (argc < 3){
+      std::cout << "Total CPU time used: "
+                << 1000.0 * (c_mona_dfa_end-c_start) / CLOCKS_PER_SEC << " ms\n"
+                << "Total wall clock time passed: "
+                << std::chrono::duration<double, std::milli>(t_mona_dfa_end-t_start).count()
+                << " ms\n";
       return 0;
     }
+    Cudd* mgr = new Cudd();
     Syft::syn test(mgr, autfile, partfile);
     clock_t c_dfa_end = clock();
     auto t_dfa_end = chrono::high_resolution_clock::now();

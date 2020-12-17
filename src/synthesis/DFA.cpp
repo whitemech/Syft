@@ -6,7 +6,7 @@ using namespace boost;
 namespace Syft {
 //update test
 
-  DFA::DFA(Cudd *m, bool to_upper): to_upper{to_upper} {
+  DFA::DFA(Cudd *m, bool to_upper, bool remove_first_state): to_upper{to_upper}, remove_first_state{remove_first_state}{
     mgr = m;
     //ctor
   }
@@ -19,9 +19,11 @@ namespace Syft {
   void DFA::initialize(string filename, string partfile) {
     //ctor
     read_from_file(filename);
+    if (remove_first_state)
+        nstates = nstates - 1;
     if (DFAflag == true) {
-      cout << "Number of DFA states: " << nstates - 1 << endl;
-      nbits = state2bin(nstates - 2).length();
+      cout << "Number of DFA states: " << nstates << endl;
+      nbits = state2bin(nstates - 1).length();
       construct_bdd_new();
       cout << "Number of state variables: " << nbits << endl;
       read_partfile(partfile);
@@ -211,9 +213,10 @@ namespace Syft {
     }
 
     for (int i = 0; i < nbits; i++) {
-      for (int j = 1; j < nstates; j++) {
+      int initial_j = remove_first_state? 0: 1;
+      for (int j = initial_j; j < nstates; j++) {
         BDD tmp = mgr->bddOne();
-        string bins = state2bin(j - 1);
+        string bins = state2bin(j - initial_j);
         int offset = nbits - bins.size();
         for (int m = 0; m < offset; m++) {
           tmp = tmp * var2bddvar(0, m);
