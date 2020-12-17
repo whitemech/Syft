@@ -6,7 +6,7 @@ using namespace boost;
 namespace Syft {
 //update test
 
-  DFA::DFA(Cudd *m) {
+  DFA::DFA(Cudd *m, bool to_upper): to_upper{to_upper} {
     mgr = m;
     //ctor
   }
@@ -62,11 +62,11 @@ namespace Syft {
     set<string> input_set;
     set<string> output_set;
     for (int i = 1; i < inputs.size(); i++) {
-      string c = inputs[i];
+      string c = to_upper? boost::algorithm::to_upper_copy(inputs[i]): inputs[i];
       input_set.insert(c);
     }
     for (int i = 1; i < outputs.size(); i++) {
-      string c = outputs[i];
+      string c = to_upper? boost::algorithm::to_upper_copy(outputs[i]): outputs[i];
       output_set.insert(c);
     }
 
@@ -75,7 +75,7 @@ namespace Syft {
         input.push_back(nbits + i - 1);
       else if (output_set.find(variables[i]) != output_set.end())
         output.push_back(nbits + i - 1);
-      else if (variables[i] == "ALIVE")
+      else if (variables[i] == "ALIVE" or variables[i] == "alive")
         output.push_back(nbits + i - 1);
       else
         cout << "error: " << variables[i] << endl;

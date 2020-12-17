@@ -2,11 +2,11 @@
 
 namespace Syft {
 
-  syn::syn(Cudd *m, string filename, string partfile) {
+  syn::syn(Cudd *m, string filename, string partfile, bool to_upper) {
     //ctor
 
     //Cudd *p = &mgr;
-    bdd = new DFA(m);
+    bdd = new DFA(m, to_upper);
     bdd->initialize(filename, partfile);
     if (bdd->DFAflag == true) {
       mgr = m;

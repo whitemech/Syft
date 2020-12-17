@@ -12,8 +12,10 @@ namespace Syft {
   typedef vector<BDD> vbdd;
 
   class DFA {
+  private:
+    bool to_upper = true;
   public:
-    DFA(Cudd *m);
+    DFA(Cudd *m, bool to_upper = true);
 
     virtual ~DFA();
 

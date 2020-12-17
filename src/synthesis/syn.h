@@ -9,7 +9,7 @@ namespace Syft {
 
   class syn {
   public:
-    syn(Cudd *m, string filename, string partfile);
+    syn(Cudd *m, string filename, string partfile, bool to_upper = true);
 
     syn(Cudd *m, DFA *d);
 
