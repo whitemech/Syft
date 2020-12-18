@@ -136,8 +136,8 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
         strategy(S2O);
 	*/
 	
-        InputFirstSynthesis IFsyn(*mgr);
-        IFstrategy = IFsyn.synthesize(W[cur], O);
+        //InputFirstSynthesis IFsyn(*mgr);
+        //IFstrategy = IFsyn.synthesize(W[cur], O);
 
         return true;
     }
@@ -198,8 +198,8 @@ bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
         }
         O *= bdd->bddvars[bdd->nbits];
 
-	InputFirstSynthesis IFsyn(*mgr);
-        IFstrategy = IFsyn.synthesize(W[cur], O);
+	//InputFirstSynthesis IFsyn(*mgr);
+        //IFstrategy = IFsyn.synthesize(W[cur], O);
         //naive synthesis
         //transducer.SolveEqn(O, S2O, outindex(), bdd->output.size());
         //strategy(S2O);
