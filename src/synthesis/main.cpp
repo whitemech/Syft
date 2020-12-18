@@ -33,7 +33,7 @@ int main(int argc, char ** argv){
     }
     Cudd* mgr = new Cudd();
     autfile = get_DFAfile(filename);
-    syn test(mgr, autfile, partfile);
+    Syft::syn test(mgr, autfile, partfile);
     
     bool res = 0;
     std::unordered_map<unsigned, BDD> strategy;
