@@ -115,7 +115,8 @@ bool syn::realizablity_sys(unordered_map<unsigned int, BDD>& IFstrategy){
         }
 
 	    Wprime.push_back(existsyn_sys(O));
-        cout << "Iteration " << cur << " Node size: " << Wprime[cur].nodeCount()<< endl;
+        cout << "Iteration " << cur << " Node size of W: " << Wprime[cur].nodeCount()<< endl;
+        cout << "Iteration " << cur << " Node size of T: " << W[cur].nodeCount()<< endl;
         if(fixpoint())
             break;
     }
@@ -160,9 +161,11 @@ bool syn::realizablity_env(std::unordered_map<unsigned, BDD>& IFstrategy){
         }
 
         BDD tmp = W[cur] + existsyn_env(O, transducer);
+        cout << "Iteration " << cur << " Node size of PreImage: " << transducer.nodeCount()<< endl;
         W.push_back(tmp);
         cur++;
-        cout << "Iteration " << cur << " Node size: " << Wprime[cur - 1].nodeCount()<< endl;
+        cout << "Iteration " << cur << " Node size of T: " << W[cur].nodeCount()<< endl;
+        cout << "Iteration " << cur << " Node size of W: " << Wprime[cur - 1].nodeCount()<< endl;
         if(fixpoint())
             break;
 
