@@ -34,10 +34,11 @@ int main(int argc, char ** argv){
     Cudd* mgr = new Cudd();
     autfile = get_DFAfile(filename);
     syn test(mgr, autfile, partfile);
-
+    
     bool res = 0;
     std::unordered_map<unsigned, BDD> strategy;
-
+    mgr->AutodynEnable(CUDD_REORDER_RANDOM);
+    
     if(starting_player == "1")
         res = test.realizablity_env(strategy);
     else
@@ -47,6 +48,7 @@ int main(int argc, char ** argv){
         cout<<"realizable"<<endl;
     else
         cout<<"unrealizable"<<endl;
+    
     clock_t c_end = clock();
     auto t_end = chrono::high_resolution_clock::now();
     std::cout << "Total CPU time used: "
